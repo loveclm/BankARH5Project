@@ -1,6 +1,7 @@
 html, body {
     height: 100%;
     margin: 0;
+    background-color: #0c0c16;
 }
 .container{
     background: url("../images/bg.png") no-repeat center center;
@@ -58,6 +59,9 @@ html, body {
     right: 20px;
     width: 13%;
 }
+#low_btn{
+    cursor: pointer;
+}
 .low img{
     width: 100%;
 }
@@ -87,6 +91,7 @@ html, body {
     text-align: center;
 
 }
+
 #scan_btn{
     display: inline-block;
     width: 45%;
@@ -113,7 +118,86 @@ html, body {
     position: absolute;
     right: 20px;
     top: 20px;
+    cursor: pointer;
 }
+
+.scan_close_wrap{
+    position: absolute;
+    bottom: -20%;
+    text-align: center;
+    width: 100%;
+}
+.scan_close_wrap img{
+    width: 15%;
+}
+
+.camera-wrap{
+    z-index: 1000;
+    position: absolute;
+    left: 0;
+    right: 0;
+    margin-left: 0;
+    margin-right: 0;
+    text-align: center;
+    top: 8%;
+}
+#scan_camera{
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.hand{
+    position: absolute;
+    bottom: 3%;
+    height: 13%;
+    width: 20%;
+    text-align: right;
+}
+#hand_h{
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+#hand_h img{
+    width: 100%;
+}
+#hand_m{
+    display: inline-block;
+    position: absolute;
+    left: 0;
+    top: 0;
+    -webkit-animation: handeffect 1.5s infinite;
+    animation: handeffect 1.5s infinite;
+    width: 45%;
+}
+#hand_m img{
+    width: 100%;
+}
+@-webkit-keyframes handeffect{
+    0%{-webkit-transform:translate(0,0)translateZ(0)scale(1,1);opacity:1}
+    100%{-webkit-transform:translate(0,0)translateZ(0)scale(1.3,1.3);opacity:.1}
+}
+@keyframes handeffect{
+    0%{transform:translate(0,0)translateZ(0)scale(1,1);opacity:1}
+    100%{transform:translate(0,0)translateZ(0)scale(1.3,1.3);opacity:.1}
+}
+@-webkit-keyframes moneyeffect{
+    0%{-webkit-transform:translate(0,-100%)}
+    20%{-webkit-transform:translate(0,0)}
+    55%{-webkit-transform:translate(0,-5%)}
+    70%{-webkit-transform:translate(0,-0)}
+    85%{-webkit-transform:translate(0,-2%)}
+    100%{-webkit-transform:translate(0,-0)}
+}
+@keyframes moneyeffect{
+    0%{transform:translate(0,-100%)}
+    20%{transform:translate(0,0)}
+    55%{transform:translate(0,-5%)}
+    70%{transform:translate(0,-0)}
+    85%{transform:translate(0,-2%)}
+    100%{transform:translate(0,-0)}
+}
+
 
 @media screen and (min-width : 300px) and (max-width : 700px){
     .low{

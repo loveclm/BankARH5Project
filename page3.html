@@ -24,29 +24,39 @@
             top: 22%;
         }
         .hand{
-            position: absolute;
-            bottom: 13%;
             right: 28%;
-            height: 13%;
+            top: 72%;
+        }
+        .low{
+            width: 50%;
+            padding-top: 2%;
             text-align: right;
         }
-        .hand img{
-            height: 100%;
+        .low a{
+            color: #fff;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        #low_btn{
+            color: #fff;
         }
     </style>
 
 </head>
 <body>
     <div class="container">
-        <div class="title">
-            <p>小猫跑进了这座大厦1F大厅</p>
-            <p>点击大门，进入大厦寻找它吧</p>
-        </div>
+        <!--<div class="title">-->
+            <!--<p>小猫跑进了这座大厦1F大厅</p>-->
+            <!--<p>点击大门，进入大厦寻找它吧</p>-->
+        <!--</div>-->
         <div class="hand">
-            <a href="page4.html"><img src="images/hand.png"></a>
+            <div style="position: relative">
+                <a href="page4.html" id="hand_m"><img src="images/hand-m.png"></a>
+                <a href="page4.html" id="hand_h"><img src="images/hand.png"></a>
+            </div>
         </div>
         <div class="low">
-            <a id="low_btn"><img src="images/low.png"></a>
+            <a href="map.html"><img src="images/page3-map.png" width="100%" style="width: 50%"></a>
         </div>
 
         <div id="lightbox_low" style="display: none;">

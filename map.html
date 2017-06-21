@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <meta name="apple-touch-fullscreen" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no">
+
+    <script type="text/javascript" src="https://api.map.baidu.com/api?v=2.0&ak=WOR15aX870MejqbOtiNH15rWL3COZxxR"></script>
+    <script type="text/javascript" src="js/jquery-1.10.2.js"></script>
+    <script type="text/javascript" src="js/main.js"></script>
+    <!--<script src="http://libs.baidu.com/jquery/1.9.0/jquery.js"></script>-->
+    <script src="js/mylocation.js"></script>
+    <link rel="stylesheet" href="css/style.css">
+
+    <title>H5 AR</title>
+
+    <style>
+        #container{
+            height: 100%;
+        }
+        #map_close{
+            display: inline-block;
+            position: absolute;
+            right: 10px;
+            top: 10px;
+            width: 10%;
+        }
+        #map_close img{
+            width: 100%;
+        }
+    </style>
+
+</head>
+<body>
+    <div class="container">
+        <div id="container"></div>
+        <a id="map_close" href="page3.html">
+            <img src="images/map-close.png" width="30px">
+        </a>
+    </div>
+</body>
+</html>

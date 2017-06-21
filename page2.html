@@ -21,9 +21,6 @@
             height: 13%;
             text-align: right;
         }
-        .hand img{
-            height: 100%;
-        }
     </style>
 
 </head>
@@ -32,12 +29,15 @@
         <div class="main">
             <img src="images/page2-main.png">
         </div>
-        <div class="title">
-            <p>快根据线索</p>
-            <p>寻找它的踪迹吧</p>
-        </div>
+        <!--<div class="title">-->
+            <!--<p>快根据线索</p>-->
+            <!--<p>寻找它的踪迹吧</p>-->
+        <!--</div>-->
         <div class="hand">
-            <a href="page3.html"><img src="images/hand.png"></a>
+            <div style="position: relative">
+                <a href="page3.html" id="hand_m"><img src="images/hand-m.png"></a>
+                <a href="page3.html" id="hand_h"><img src="images/hand.png"></a>
+            </div>
         </div>
         <div class="logo">
             <a href="index.html"><img src="images/logo.png"></a>
@@ -57,7 +57,6 @@
                     <p>5. 杭州银行</p>
                     <p>6. 杭州银行</p>
                 </div>
-
             </div>
             <a id="lightbox_low_close">
                 <img src="images/close.png" width="30px">
