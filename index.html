@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <meta name="apple-touch-fullscreen" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no">
+
+    <script type="text/javascript" src="js/jquery-1.10.2.js"></script>
+    <script type="text/javascript" src="js/main.js"></script>
+    <link rel="stylesheet" href="css/style.css">
+
+    <title>H5 AR</title>
+    <style type="text/css">
+        .cat-hand{
+            position: absolute;
+            top: 65%;
+            right: 0;
+            height: 13%;
+            text-align: right;
+        }
+        .cat-hand img{
+            height: 100%;
+        }
+
+    </style>
+
+</head>
+<body>
+    <div class="container">
+        <div class="main">
+            <img src="images/page1-gift.png">
+        </div>
+        <div class="title">
+            <!--<img src="images/page1-title.png">-->
+            <p>杭州银行为你们精心准备的礼物</p>
+            <p>被淘气的小猫藏起来了</p>
+        </div>
+        <div class="cat-hand">
+            <a href="page2.html"><img src="images/page1-hand.png"></a>
+        </div>
+        <div class="low">
+            <a id="low_btn"><img src="images/low.png"></a>
+        </div>
+
+        <div id="lightbox_low" style="display: none;">
+            <div class="lightbox-content">
+                <div class="low-content">
+                    <h2>杭州银行</h2>
+                    <p>1. 杭州银行</p>
+                    <p>2. 杭州银行</p>
+                    <p>3. 杭州银行</p>
+                    <p>4. 杭州银行</p>
+                    <p>5. 杭州银行</p>
+                    <p>6. 杭州银行</p>
+                </div>
+
+            </div>
+            <a id="lightbox_low_close">
+                <img src="images/close.png" width="30px">
+            </a>
+        </div>
+    </div>
+</body>
+</html>
