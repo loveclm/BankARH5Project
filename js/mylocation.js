@@ -14,8 +14,10 @@ var geolocation =  null;
 var walking = null;
 var timer = null;
 
-var tagetPoint =new BMap.Point( 124.15,39.866667);
-var centerPoint =new BMap.Point( 124.15,39.866667);
+//var tagetPoint =new BMap.Point( 124.15,39.866667);
+//var centerPoint =new BMap.Point( 124.15,39.866667);
+var tagetPoint =new BMap.Point(120.2162672176,30.2439083354);
+var centerPoint =new BMap.Point(120.2162672176,30.2439083354);
 var interval = 3000;
 var zoom = 15;
 
