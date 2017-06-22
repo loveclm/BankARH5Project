@@ -126,9 +126,40 @@ html, body {
     bottom: -20%;
     text-align: center;
     width: 100%;
+    margin-left: auto;
+    margin-right: auto;
 }
-.scan_close_wrap img{
-    width: 15%;
+#scan_close_btn{
+    display: inline-block;
+    width: 13%;
+}
+#scan_close_btn img{
+    width: 100%;
+}
+
+.cant_recog_wrap{
+    background-color: #fff;
+    width: 60%;
+    border-radius: 5px;
+    padding: 5px 20px 20px;
+    text-align: center;
+    margin-top: 50%;
+    margin-right: auto;
+    margin-left: auto;
+}
+.cant_recog_wrap p{
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+.cant_recog_wrap a{
+    /*border:1px solid #666;*/
+    background-color: #0072ff;
+    border-radius: 5px;
+    padding: 10px 20px;
+    color: #fff;
+    text-decoration: none;
+    margin-top: 10px;
+    display: inline-block;
 }
 
 .camera-wrap{
@@ -139,9 +170,22 @@ html, body {
     margin-left: 0;
     margin-right: 0;
     text-align: center;
-    top: 8%;
+    top: 10%;
 }
 #scan_camera{
+    margin-left: auto;
+    margin-right: auto;
+}
+#video{
+    width: 70%;
+    height: 50%;
+}
+#canvas{
+    position: absolute;
+    width: 70%;
+    left: 0;
+    right: 0;
+    top: 0;
     margin-left: auto;
     margin-right: auto;
 }
@@ -183,21 +227,38 @@ html, body {
 }
 @-webkit-keyframes moneyeffect{
     0%{-webkit-transform:translate(0,-100%)}
-    20%{-webkit-transform:translate(0,0)}
-    55%{-webkit-transform:translate(0,-5%)}
-    70%{-webkit-transform:translate(0,-0)}
-    85%{-webkit-transform:translate(0,-2%)}
     100%{-webkit-transform:translate(0,-0)}
 }
 @keyframes moneyeffect{
     0%{transform:translate(0,-100%)}
-    20%{transform:translate(0,0)}
-    55%{transform:translate(0,-5%)}
-    70%{transform:translate(0,-0)}
-    85%{transform:translate(0,-2%)}
     100%{transform:translate(0,-0)}
 }
 
+.scan-line-wrap{
+    position: absolute;
+    top: 0;
+    width: 100%;
+    -webkit-animation: scaneffect 4s infinite;
+    animation: scaneffect 4s infinite;
+    -webkit-animation-timing-function: linear;
+    animation-timing-function: linear;
+}
+.scan-line-wrap img{
+    width: 70%;
+
+}
+@-webkit-keyframes scaneffect{
+    0%{top:0}
+    100%{top:100%}
+}
+@keyframes scaneffect{
+    0%{top:0}
+    100%{top:95%}
+}
+
+#video{
+    border: 1px solid #0f0;
+}
 
 @media screen and (min-width : 300px) and (max-width : 700px){
     .low{

@@ -6,6 +6,8 @@ var hiar_account = '2805980246@qq.com';
 var hiar_pass = 'Hiar1234567890';
 var hiar_appkey = 't5Doe0mv7E';
 var hiar_secret = 'a316856db2abeb70367c02d4b68b4ae2';
+var token = '';
+var recog_count = 0;
 
 window.addEventListener('load',function(){
     var width = window.innerWidth
@@ -16,13 +18,9 @@ window.addEventListener('load',function(){
         || document.documentElement.clientHeight
         || document.body.clientHeight;
 
-    Webcam.set({
-        width: 320,
-        height: 240,
-        image_format: 'jpeg',
-        jpeg_quality: 90
-    });
-    Webcam.attach( '#scan_camera' );
+    setTimeout(turnon_camera, 2000);
+    turnon_camera();
+
 
     // scan dialog
     $('.scan').click(function(){
@@ -32,47 +30,22 @@ window.addEventListener('load',function(){
     // scan dialog close button
     $('#scan_close_btn').click(function(){
         $('#lightbox').hide();
+        clearInterval(recog_timmer);
+        recog_count = 0;
     });
 
     // scan button
     $('#scan_btn').click(function(){
-        //$(this).hide();
-        //$('#scan_before_img').hide();
-        //$('.camera-wrap').show();
+        //capture_recognitioon();
+        recog_timmer = setInterval( function(){
+            recog_count++;
+            if( recog_count > 2 ){
+                clearInterval( recog_timmer );
+                cant_recog_show();
+            }
+            capture_recognitioon();
+        }, 4000 );
         show_camera();
-
-        start_snapping();
-
-        ajax_url = 'https://api.hiar.io/v1/account/signin';
-        data = {
-            account: hiar_account,
-            password: hiar_pass
-        }
-
-        //$.ajax({
-        //    type: "POST",
-        //    url: ajax_url,
-        //    headers: {
-        //        'Content-Type': 'application/x-www-form-urlencoded',
-        //        'Access-Control-Allow-Origin': '*'
-        //    },
-        //    success: function (data) {
-        //        alert('result');
-        //        console.log(data);
-        //    },
-        //    error: function (error) {
-        //        alert('error');
-        //    },
-        //    dataType: "json",
-        //    data: {
-        //        account: hiar_account,
-        //        password: hiar_pass
-        //    },
-        //    cache: false,
-        //    contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
-        //    processData: false,
-        //    timeout: 60000
-        //});
 
         $('#scan_result').click(function(){
             show_success_modal();
@@ -89,16 +62,6 @@ window.addEventListener('load',function(){
         $('#lightbox_low').hide();
     });
 
-    var v = document.getElementsByTagName('video')[0];
-    v.addEventListener( "loadedmetadata", function (e) {
-        cam_width = this.videoWidth;
-        cam_height = this.videoHeight;
-
-        Webcam.params.width = cam_width*0.5;
-        Webcam.params.height = cam_height*0.5;
-        Webcam.params.dest_width = cam_width*0.5;
-        Webcam.params.dest_height = cam_height*0.5;
-    }, false );
 });
 
 
@@ -120,7 +83,7 @@ function show_success_modal(){
     $('#scan_before_img').hide();
     $('#scan_after_img').show();
     $('#scan_money_img').show();
-    $('#scan_money_img').css('animation', 'moneyeffect 1s');
+    $('#scan_money_img').css('animation', 'moneyeffect 3s');
     $('.camera-wrap').hide();
     $('.scan_btn_wrap').hide();
     $('.lightbox-content').css('margin-top', 0);
@@ -136,42 +99,65 @@ function show_camera(){
     $('.scan_btn_wrap').hide();
 }
 
-/*****************************************
-scan functions
- ****************************************/
-var timer = null;
 
-function take_snapshot() {
-    // take snapshot and get image data
-    Webcam.snap( function(data_uri) {
-        // display results in page
-        //var img = new Image();
-        //img.src = data_uri;
 
-        var image = $('#scan_result img');
-        //img.onload = function() {
-        //    //alert(this.width + 'x' + this.height);
-        //}
-        image.attr('src', data_uri);
+var videoStatus = false;
+var videoElement
+function turnon_camera(){
+    video.classList.remove('hidden');
 
-    } );
-}
+    videoElement = document.querySelector('video');
 
-function start_snapping() {
-    if (!timer) {
-        take_snapshot();
-        timer = setInterval( take_snapshot, 250 );
+    navigator.getUserMedia = navigator.getUserMedia ||
+        navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.mediaDevices.getUserMedia;
+
+    var rearCameraId;
+
+    if (navigator.mediaDevices === undefined ||
+        navigator.mediaDevices.enumerateDevices === undefined) {
+        alert('This browser does not seem to support MediaStreamTrack.\n\nTry Chrome.');
+    } else {
+        navigator.mediaDevices.enumerateDevices()
+            .then(function(devices) {
+                devices.forEach(function(device) {
+                    if (device.kind == 'videoinput') {
+                        if (device.label.indexOf('back') > -1) {
+                            rearCameraId = device.deviceId;
+                        }
+                        // alert(device.kind + ": " + device.label + " id = " + device.deviceId);
+                    }
+                });
+
+                var constraints = {
+                    video: {
+                        optional: [
+                            {sourceId: rearCameraId},
+                        ],
+                        mandatory: {
+                            maxWidth: 480,
+                            maxHeight: 480,
+                            minWidth: 480,
+                            minHeight: 480
+                        }
+                    }
+                };
+                navigator.getUserMedia(constraints, successCallback, errorCallback);
+            })
+            .catch(function(err) {
+                alert(err.name + ": " + err.message);
+            });
     }
 }
 
-function stop_snapping() {
-    if (timer) {
-        clearTimeout( timer );
-        timer = null;
-    }
+var recog_timmer;
+function successCallback(stream) {
+    videoStatus = true;
+    window.stream = stream; // make stream available to console
+    videoElement.src = window.URL.createObjectURL(stream);
+    videoElement.play();
 }
 
-function erase_snaps() {
-    document.getElementById('results').innerHTML = '';
+function errorCallback(error) {
+    videoStatus = false;
+    alert('navigator.getUserMedia error: ' + error);
 }
-

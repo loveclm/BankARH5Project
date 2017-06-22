@@ -9,9 +9,10 @@
     <meta name="format-detection" content="telephone=no">
 
     <script type="text/javascript" src="js/jquery-1.10.2.js"></script>
-    <script type="text/javascript" src="js/webcam.js"></script>
+    <!--<script type="text/javascript" src="js/webcam.js"></script>-->
     <script type="text/javascript" src="js/main.js"></script>
     <script type="text/javascript" src="js/scan.js"></script>
+
     <link rel="stylesheet" href="css/style.css">
 
     <title>H5 AR</title>
@@ -38,9 +39,6 @@
             height: 100%;
         }
         .scan{
-            cursor: pointer;
-        }
-        #scan_result{
             cursor: pointer;
         }
         #scan_after_img{
@@ -82,10 +80,15 @@
                 <img src="images/page6-main.png" id="scan_after_img" style="display: none">
                 <img src="images/page6-money.png" id="scan_money_img" style="display: none">
                 <div class="camera-wrap" style="display: none">
-                    <div id="scan_camera" style="display: none"></div>
-                    <div id="scan_result">
-                        <img src="">
+                    <div class="videoWrapper">
+                        <video id="video" class="hidden" autoplay></video>
+                        <div class="scan-line-wrap">
+                            <img src="images/page6-scanline.png">
+                        </div>
+                        <!--<img src="">-->
                     </div>
+                    <canvas id="canvas" style="display: none"></canvas>
+                    <!--<button id="capture" class="hidden btn btn-primary btn-lg">Capture</button>-->
                 </div>
                 <div class="scan_btn_wrap">
                     <a id="scan_btn">
@@ -97,7 +100,10 @@
                         <img src="images/close.png">
                     </a>
                 </div>
-
+                <div class="cant_recog_wrap" style="display: none">
+                    <p>不可以找财猫。请再找吧。</p>
+                    <a href="javascript: cant_recog_hide();">关 闭</a>
+                </div>
             </div>
         </div>
 
@@ -124,8 +130,8 @@
 
     </div>
 
-    <script language="JavaScript">
-
-    </script>
+    <script type="text/javascript" src="js/md5.min.js"></script>
+    <script type="text/javascript" src="js/RecognizeIm.js"></script>
+    <script type="text/javascript" src="js/script.js"></script>
 </body>
 </html>
