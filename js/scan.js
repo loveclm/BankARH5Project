@@ -18,13 +18,12 @@ window.addEventListener('load',function(){
         || document.documentElement.clientHeight
         || document.body.clientHeight;
 
-    setTimeout(turnon_camera, 2000);
-    turnon_camera();
-
+    camera_enumerate();
 
     // scan dialog
     $('.scan').click(function(){
         show_scan_modal();
+        turnon_camera();
     })
 
     // scan dialog close button
@@ -102,50 +101,45 @@ function show_camera(){
 
 
 var videoStatus = false;
-var videoElement
+var videoElement;
+var camera_ids = new Array();
 function turnon_camera(){
     video.classList.remove('hidden');
 
     videoElement = document.querySelector('video');
 
     navigator.getUserMedia = navigator.getUserMedia ||
-        navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.mediaDevices.getUserMedia;
+        navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
 
     var rearCameraId;
 
     if (navigator.mediaDevices === undefined ||
         navigator.mediaDevices.enumerateDevices === undefined) {
-        alert('This browser does not seem to support MediaStreamTrack.\n\nTry Chrome.');
+        alert('这个浏览器不支持MediaStreamTrack。\n\n请使用360阅览器.');
     } else {
-        navigator.mediaDevices.enumerateDevices()
-            .then(function(devices) {
-                devices.forEach(function(device) {
-                    if (device.kind == 'videoinput') {
-                        if (device.label.indexOf('back') > -1) {
-                            rearCameraId = device.deviceId;
-                        }
-                        // alert(device.kind + ": " + device.label + " id = " + device.deviceId);
-                    }
-                });
-
+        try{
+            if( camera_ids.length > 0 ){
+                rearCameraId = camera_ids[camera_ids.length-1];
                 var constraints = {
                     video: {
-                        optional: [
-                            {sourceId: rearCameraId},
-                        ],
+                        optional: [{sourceId: rearCameraId}],
                         mandatory: {
                             maxWidth: 480,
                             maxHeight: 480,
                             minWidth: 480,
                             minHeight: 480
                         }
-                    }
+                    },
+                    audio: false
                 };
                 navigator.getUserMedia(constraints, successCallback, errorCallback);
-            })
-            .catch(function(err) {
-                alert(err.name + ": " + err.message);
-            });
+            }
+        }
+        catch(err){
+            alert(JSON.stringify(err));
+        }
+
+
     }
 }
 
@@ -160,4 +154,28 @@ function successCallback(stream) {
 function errorCallback(error) {
     videoStatus = false;
     alert('navigator.getUserMedia error: ' + error);
+}
+
+function camera_enumerate(){
+    navigator.getUserMedia = navigator.getUserMedia ||
+        navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
+
+    var rearCameraId;
+
+    if (navigator.mediaDevices === undefined ||
+        navigator.mediaDevices.enumerateDevices === undefined) {
+        alert('这个浏览器不支持MediaStreamTrack。\n\n请使用360阅览器.');
+    } else {
+        navigator.mediaDevices.enumerateDevices()
+            .then(function(devices) {
+                devices.forEach(function(device) {
+                    if (device.kind == 'videoinput') {
+                        camera_ids.push(device.deviceId);
+                    }
+                });
+            })
+            .catch(function(err) {
+                alert(err.name + ": " + err.message);
+            });
+    }
 }

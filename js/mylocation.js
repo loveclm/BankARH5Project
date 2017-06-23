@@ -14,7 +14,8 @@ var geolocation =  null;
 var walking = null;
 var timer = null;
 
-var thres_alert = 100.000;
+var thres_alert = 0.0009; // 100 meters
+var update_dist = 0.0009; // redraw map when move 100 meters
 //var tagetPoint =new BMap.Point( 124.15,39.866667);
 //var centerPoint =new BMap.Point( 124.15,39.866667);
 var tagetPoint =new BMap.Point(120.2162672176,30.2439083354);
@@ -23,6 +24,7 @@ var interval = 3000;
 var zoom = 15;
 
 var index = 0;  //for test
+var lastPoint = {lng: 0.0, lat: 0.0};
 $(document).ready(function(){
 
     map = new BMap.Map("container");
@@ -40,6 +42,37 @@ function take_location() {
         if(this.getStatus() == BMAP_STATUS_SUCCESS){
             var curPoint = r.point;
 
+            if(lastPoint.lng == 0.0 || getDist(curPoint, lastPoint) > update_dist){
+
+                lastPoint = r.point;
+
+                if(walking) map.clearOverlays();
+                walking = new BMap.WalkingRoute(map, {renderOptions:{map: map, autoViewport: true}});
+                walking.search(curPoint, tagetPoint);
+
+                walking.setSearchCompleteCallback(function(){
+                    var pts = walking.getResults().getPlan(0).getRoute(0).getPath();
+
+                    var minDist = 99, minPtId = -1;
+                    for(var i = 0; i < pts.length-1; i++){
+                        var line = [];
+                        line.push(pts[i]);
+                        line.push(pts[i+1]);
+                        var vDist = getVerticalDistance(curPoint, line);
+                        if(vDist < minDist){
+                            minDist = vDist;
+                            minPtId = i;
+                        }
+                    }
+
+                    if(minPtId >= 0 && minDist > thres_alert){
+                        alert('minId: '+ minPtId + ', minDist: '+ minDist);
+                        map.addOverlay(new BMap.Polyline([curPoint, pts[minPtId]], {strokeColor: "#000000",strokeOpacity:0.75,strokeWeight:4,enableMassClear:true}));
+                    }
+
+                });
+            }
+
             //lng, lat
             //alert(JSON.stringify(curPoint));
 
@@ -48,34 +81,6 @@ function take_location() {
             //console.log(curPoint);
             //index++;
             ////////
-
-            if(walking) map.clearOverlays();
-            walking = new BMap.WalkingRoute(map, {renderOptions:{map: map, autoViewport: true}});
-            walking.search(curPoint, tagetPoint);
-
-            walking.setSearchCompleteCallback(function(){
-                var pts = walking.getResults().getPlan(0).getRoute(0).getPath();
-
-                var minDist = 99, minPtId = -1;
-                for(var i = 0; i < pts.length-1; i++){
-                    var line = [];
-                    line.push(pts[i]);
-                    line.push(pts[i+1]);
-                    var vDist = getVerticalDistance(curPoint, line);
-                    if(vDist < minDist){
-                        minDist = vDist;
-                        minPtId = i;
-                    }
-                }
-
-                if(minPtId >= 0 && minDist > thres_alert){
-                    alert('minId: '+ minPtId + ', minDist: '+ minDist);
-                    map.addOverlay(new BMap.Polyline([curPoint, pts[minPtId]], {strokeColor: "#000000",strokeOpacity:0.75,strokeWeight:4,enableMassClear:true}));
-                }
-
-                var pathstr = JSON.stringify(pts);
-                //alert(pathstr);
-            });
 
         } else {
             alert('??????~');
