@@ -256,8 +256,25 @@ html, body {
     100%{top:95%}
 }
 
+@-webkit-keyframes gifteffect{
+    0%{-webkit-transform:translate(30%,0);opacity:0}
+    100%{-webkit-transform:translate(0,0);opacity:1}
+}
+@keyframes gifteffect{
+    0%{transform:translate(30%,0);opacity:0}
+    100%{transform:translate(0,0);opacity:1}
+}
+
 #video{
     border: 1px solid #0f0;
+}
+
+#qr_code{
+    position: absolute;
+    top: 53%;
+    height: 35% !important;
+    left: 0;
+    right: 0;
 }
 
 @media screen and (min-width : 300px) and (max-width : 700px){

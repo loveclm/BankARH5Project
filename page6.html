@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <meta name="apple-touch-fullscreen" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no">
+
+    <script type="text/javascript" src="js/jquery-1.10.2.js"></script>
+    <!--<script type="text/javascript" src="js/webcam.js"></script>-->
+    <script type="text/javascript" src="js/main.js"></script>
+    <script type="text/javascript" src="js/scan.js"></script>
+
+    <link rel="stylesheet" href="css/style.css">
+
+    <title>H5 AR</title>
+    <style type="text/css">
+        .container {
+            background: url("images/page4-main.png") no-repeat center center;
+            background-size: 100% 100%;
+            background-position-x: 0;
+            background-position-y: 0;
+        }
+        #scan_after_img{
+            width: 100% !important;
+        }
+        #scan_money_img{
+            position: absolute;
+            top: 0;
+            width: 100% !important;
+            height: 75% !important;
+            /*-webkit-transition: top 1.5s;*/
+            /*transition: top 1.5s;*/
+            -webkit-animation-timing-function: ease-in-out;
+            animation-timing-function: ease-in-out;
+        }
+
+    </style>
+
+    <script>
+        window.addEventListener('load',function(){
+            $('#lightbox').show();
+            $('#scan_money_img').css('animation', 'moneyeffect 3s');
+        });
+    </script>
+
+</head>
+<body>
+    <div class="container">
+        <div id="lightbox" style="display: none;">
+            <div class="lightbox-content" style="margin-top: 0; height: 75%">
+                <img src="images/page6-main.png" id="scan_after_img">
+                <img src="images/page6-money.png" id="scan_money_img">
+                <a><img src="images/page6-qrcode.png" id="qr_code"></a>
+                <div class="scan_close_wrap">
+                    <a href="page4.html">
+                        <img src="images/close.png">
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

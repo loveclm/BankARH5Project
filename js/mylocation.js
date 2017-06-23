@@ -1,6 +1,7 @@
 /*
     Usage in html
  <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=WOR15aX870MejqbOtiNH15rWL3COZxxR"></script>
+ <script type="text/javascript" src="https://developer.baidu.com/map/jsdemo/demo/convertor.js"></script>
  <script src="http://libs.baidu.com/jquery/1.9.0/jquery.js"></script>
  <script src="./js/mylocation.js"></script>
 
@@ -8,122 +9,78 @@
 
  */
 
-
 var map = null;
 var geolocation =  null;
 var walking = null;
 var timer = null;
+var existName = false;
+var currentName = '';
 
-var thres_alert = 0.0009; // 100 meters
-var update_dist = 0.0009; // redraw map when move 100 meters
 //var tagetPoint =new BMap.Point( 124.15,39.866667);
 //var centerPoint =new BMap.Point( 124.15,39.866667);
-var tagetPoint =new BMap.Point(120.2162672176,30.2439083354);
-var centerPoint =new BMap.Point(120.2162672176,30.2439083354);
-var interval = 3000;
+
+//var tagetPoint =new BMap.Point( 124.1545929229,39.8915775852); // dandong
+var tagetPoint =new BMap.Point( 120.2162672176, 30.2439083354); // hangzou
+var currentPoint = null;
 var zoom = 15;
-
-var index = 0;  //for test
-var lastPoint = {lng: 0.0, lat: 0.0};
+var geocoder = null;
 $(document).ready(function(){
-
     map = new BMap.Map("container");
     geolocation = new BMap.Geolocation();
+    geocoder = new BMap.Geocoder();
+    map.centerAndZoom(tagetPoint, zoom);
+    var point = tagetPoint;
+    map.enableScrollWheelZoom();
+    map.enableContinuousZoom();
 
-    map.centerAndZoom(centerPoint, zoom);
-    if (!timer) {
-        take_location();
-        timer = setInterval( take_location, interval );
-    }
-});
 
-function take_location() {
-    geolocation.getCurrentPosition(function(r){
-        if(this.getStatus() == BMAP_STATUS_SUCCESS){
-            var curPoint = r.point;
-
-            if(lastPoint.lng == 0.0 || getDist(curPoint, lastPoint) > update_dist){
-
-                lastPoint = r.point;
-
-                if(walking) map.clearOverlays();
-                walking = new BMap.WalkingRoute(map, {renderOptions:{map: map, autoViewport: true}});
-                walking.search(curPoint, tagetPoint);
-
-                walking.setSearchCompleteCallback(function(){
-                    var pts = walking.getResults().getPlan(0).getRoute(0).getPath();
-
-                    var minDist = 99, minPtId = -1;
-                    for(var i = 0; i < pts.length-1; i++){
-                        var line = [];
-                        line.push(pts[i]);
-                        line.push(pts[i+1]);
-                        var vDist = getVerticalDistance(curPoint, line);
-                        if(vDist < minDist){
-                            minDist = vDist;
-                            minPtId = i;
-                        }
-                    }
-
-                    if(minPtId >= 0 && minDist > thres_alert){
-                        alert('minId: '+ minPtId + ', minDist: '+ minDist);
-                        map.addOverlay(new BMap.Polyline([curPoint, pts[minPtId]], {strokeColor: "#000000",strokeOpacity:0.75,strokeWeight:4,enableMassClear:true}));
-                    }
-
-                });
+    var marker1 = new BMap.Marker(point);
+    map.addOverlay(marker1);
+    marker1.addEventListener("click", function(){
+        if(existName){
+            var start = {
+                //name:"东港市教育局"
+                name: currentName
+            }
+            var end = {
+                //name:"百盛商城"
+                name:"东杭大厦"
             }
 
-            //lng, lat
-            //alert(JSON.stringify(curPoint));
+            var opts = {
+                mode:BMAP_MODE_WALKING,
+               // region:"东港"
+                region:"杭州"
+            }
 
-            ///// For test ///
-            //curPoint.lat += index * 0.1;
-            //console.log(curPoint);
-            //index++;
-            ////////
+            var ss = new BMap.RouteSearch();
+            ss.routeCall(start, end, opts);
+        }
+    });
 
-        } else {
-            alert('??????~');
+    geolocation.getCurrentPosition(function(r){
+        if(this.getStatus() == BMAP_STATUS_SUCCESS){
+            currentPoint = r.point;
+            geocoder.getLocation(currentPoint, function(address){
+                existName = true;
+                currentName = address.address;
+                console.log(currentName);
+
+                var opts = {
+                    width : 400,
+                    height: 70,
+                    title : "杭州银行"
+                    //  title : currentName
+                }
+                var infoWindow = new BMap.InfoWindow("点击marker将进入路线查询，并直接跳转到webapp主站", opts);
+                map.openInfoWindow(infoWindow,tagetPoint);
+            });
+
+            //BMap.Convertor.translate(r.point,0,translateCallback);
+
+
         }
     },{enableHighAccuracy: true});
-}
 
-function getVerticalDistance(pt, line){
-    var x1, y1, x2, y2;
-    var px, py;
 
-    px = pt.lng;
-    py = pt.lat;
-    x1 = line[0].lng;
-    y1 = line[0].lat;
-    x2 = line[1].lng;
-    y2 = line[1].lat;
-
-    var a, b, c;
-    a = y2 - y1;
-    b = x1 - x2;
-    c = -(a*x1 + b*y1);
-
-    if(a == 0 && b == 0){
-        return 99;
-    }
-
-    var d1, d2, d;
-    d1 = getDist(pt, line[0]);
-    d2 = getDist(pt, line[1]);
-    d = getDist(line[0], line[1]);
-
-    var angle1, angle2;
-    angle1 = Math.acos((d1*d1 + d*d - d2*d2)/(2*d1*d));
-    angle2 = Math.acos((d2*d2 + d*d - d1*d1)/(2*d*d2));
-
-    if(angle1 > Math.PI / 2 || angle2 > Math.PI / 2) return 99;
-
-    var dist = Math.abs(a*px + b*py + c) / Math.sqrt(a*a + b*b);
-    return dist;
-}
-
-function getDist(pt1, pt2){
-    return Math.sqrt((pt1.lng-pt2.lng)*(pt1.lng-pt2.lng) + (pt1.lat-pt2.lat)*(pt1.lat-pt2.lat));
-}
-
+});

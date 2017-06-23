@@ -5,11 +5,6 @@
 window.addEventListener('load',function(){
     resize();
 
-    // low button
-    $('#low_btn').click(function(){
-        $('#lightbox_low').show();
-    })
-
     //low close button
     $('#lightbox_low_close').click(function(){
         $('#lightbox_low').hide();

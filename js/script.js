@@ -4,8 +4,8 @@
 	var video = document.querySelector('#video');
 
 
-	var apiKey = 'be6453fc3b'
-	var apiClientId = '46889';
+	var apiKey = 'd9318ea05c'
+	var apiClientId = '46895';
 	var apiMode = 'single';
 	var apiScale = 480;
 	var apiIsAll = 'best';
@@ -34,17 +34,11 @@
 				debug: true,
 				onRecognitionSuccess: function(resp) {
 					if( resp.status == 0 ){
-						console.log(resp.objects);
 						var result = resp.objects[0];
 						result = result.id;
-						console.log(result);
 
 						if( result == 'h5ar_catch' ){
 							show_success_modal();
-							$('#canvas').hide();
-							recog_count = 0;
-							is_processing = false;
-							clearInterval(recog_timmer);
 							return;
 						}
 					}
@@ -52,12 +46,12 @@
 					cant_recog_show();
 				},
 				onRecognitionFailure: function(resp) {
-					console.log(JSON.stringify(resp));
+					cant_recog_show();
 					$('#canvas').hide();
 					is_processing = false;
 				},
 				onError: function(ajax) {
-					console.log(JSON.stringify(ajax))
+					cant_recog_show();
 				}
 			}
 			//Init Recognize.im API object and send request.
@@ -87,6 +81,7 @@
 
 	function cant_recog_show(){
 		$('.videoWrapper').hide();
+		$('#scan_capture_img').hide();
 		$('.cant_recog_wrap').show();
 		recog_count = 0;
 		is_processing = false;
@@ -95,4 +90,5 @@
 	function cant_recog_hide(){
 		$('.cant_recog_wrap').hide();
 		$('#lightbox').hide();
+
 	}
