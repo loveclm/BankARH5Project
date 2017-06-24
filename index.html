@@ -144,6 +144,7 @@
     <script>
         var cur_page = 1;
         var prev_light_id = 'light00';
+        var page2_timer;
         window.addEventListener('load',function(){
             var light_frame = 1;
             var lightTimer = setInterval(function(){
@@ -171,7 +172,7 @@
                 }
             }, 50)
 
-            var page2_timer = setTimeout(page2, 5000);
+            page2_timer = setTimeout(page2, 5000);
             var low_timer;
             // low button
             $('#low_btn').click(function(){
@@ -193,6 +194,7 @@
         });
 
         function page2(){
+            clearTimeout(page2_timer);
             cur_page = 2;
             $('.cat-hand').hide();
             $('#page1').hide();

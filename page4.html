@@ -46,29 +46,25 @@
         </div>
         <div id="lightbox" style="display: none;">
             <div class="lightbox-content">
+
                 <img src="images/page5-main.png" id="scan_before_img">
-                <img src="" id="scan_capture_img" style="display: none">
-                <div class="camera-wrap" style="display: none">
-                    <div class="videoWrapper">
-                        <video id="video" class="hidden" autoplay></video>
-                        <div class="scan-line-wrap">
-                            <img src="images/page6-scanline.png">
-                        </div>
-                        <!--<img src="">-->
-                    </div>
-                    <canvas id="canvas" style="display: none"></canvas>
-                    <!--<button id="capture" class="hidden btn btn-primary btn-lg">Capture</button>-->
-                </div>
                 <div class="scan_btn_wrap">
                     <a id="scan_btn">
                         <img src="images/page5-scanbtn.png">
                     </a>
                 </div>
+
+                <img src="" id="scan_capture_img" style="display: none">
+                <div class="recog_process" style="display: none">
+                    <p>请稍等。在AR扫描中...<img src="images/ajax-loader.gif"></p>
+                </div>
+
                 <div class="scan_close_wrap">
                     <a id="scan_close_btn">
-                        <img src="images/close.png">
+                        <img src="images/close.png" width="7%">
                     </a>
                 </div>
+
                 <div class="cant_recog_wrap" style="display: none">
                     <p>扫描失败。请重试。</p>
                     <a href="javascript: cant_recog_hide();">关 闭</a>
@@ -87,6 +83,5 @@
 
     <script type="text/javascript" src="js/md5.min.js"></script>
     <script type="text/javascript" src="js/RecognizeIm.js"></script>
-    <script type="text/javascript" src="js/script.js"></script>
 </body>
 </html>

@@ -277,6 +277,29 @@ html, body {
     right: 0;
 }
 
+.recog_process{
+    position: absolute;
+    top: 35%;
+    width: 55%;
+    left: 0;
+    right: 0;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: rgba(0,0,0,0.8);
+    color: #fff;
+    font-size: 1rem;
+    padding: 20px;
+    border-radius: 5px;
+}
+.recog_process p{
+    margin: 0;
+    text-align: center;
+}
+.recog_process img{
+    margin-top: 15px !important;
+    width: 15%
+}
+
 @media screen and (min-width : 300px) and (max-width : 700px){
     .low{
         right: 20px;
