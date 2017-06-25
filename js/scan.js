@@ -67,7 +67,7 @@ window.addEventListener('load',function(){
                         var result = resp.objects[0];
                         result = result.id;
                         console.log(result);
-                        
+
                         if( result == 'h5ar_catch' ){
                             show_success_modal();
                             return;

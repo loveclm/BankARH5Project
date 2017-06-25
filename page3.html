@@ -42,6 +42,17 @@
         }
     </style>
 
+    <script>
+        window.addEventListener('load',function(){
+            $('#hand_m').click(function(){
+                window.location = 'page4.html';
+            })
+            $('#hand_h').click(function(){
+                window.location = 'page4.html';
+            })
+        })
+    </script>
+
 </head>
 <body>
     <div class="container">
@@ -51,8 +62,8 @@
         <!--</div>-->
         <div class="hand">
             <div style="position: relative">
-                <a href="page4.html" id="hand_m"><img src="images/hand-m.png"></a>
-                <a href="page4.html" id="hand_h"><img src="images/hand.png"></a>
+                <a id="hand_m"><img src="images/hand-m.png"></a>
+                <a id="hand_h"><img src="images/hand.png"></a>
             </div>
         </div>
         <div class="low">

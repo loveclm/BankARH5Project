@@ -36,6 +36,16 @@
         }
     </style>
 
+    <script>
+        window.addEventListener('load',function(){
+            $('#hand_m').click(function(){
+                window.location = 'page3.html';
+            })
+            $('#hand_h').click(function(){
+                window.location = 'page3.html';
+            })
+        })
+    </script>
 </head>
 <body>
     <div class="container">
@@ -122,8 +132,8 @@
         </div>
         <div class="hand" style="display: none">
             <div style="position: relative">
-                <a href="page3.html" id="hand_m"><img src="images/hand-m.png"></a>
-                <a href="page3.html" id="hand_h"><img src="images/hand.png"></a>
+                <a id="hand_m"><img src="images/hand-m.png"></a>
+                <a id="hand_h"><img src="images/hand.png"></a>
             </div>
         </div>
         <div class="logo">
@@ -145,9 +155,10 @@
         var cur_page = 1;
         var prev_light_id = 'light00';
         var page2_timer;
+        var lightTimer;
         window.addEventListener('load',function(){
             var light_frame = 1;
-            var lightTimer = setInterval(function(){
+            lightTimer = setInterval(function(){
                 var light_id = '';
 
                 if(light_frame < 10){
@@ -195,13 +206,14 @@
 
         function page2(){
             clearTimeout(page2_timer);
+            clearTimeout(lightTimer);
             cur_page = 2;
             $('.cat-hand').hide();
             $('#page1').hide();
             $('#page2').show();
 
             var light_frame = 1;
-            var lightTimer = setInterval(function(){
+            lightTimer = setInterval(function(){
                 var light_id = '';
 
                 if(light_frame < 10){
