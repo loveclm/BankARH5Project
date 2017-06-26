@@ -1,8 +1,8 @@
 /**
  * Created by Cai on 6/20/2017.
  */
-var apiKey = 'd9318ea05c'
-var apiClientId = '46895';
+//var apiKey = 'd9318ea05c'
+//var apiClientId = '46895';
 var apiMode = 'single';
 var apiScale = 480;
 var apiIsAll = 'best';
