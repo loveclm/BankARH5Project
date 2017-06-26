@@ -57,7 +57,19 @@
 
                 <img src="" id="scan_capture_img" style="display: none">
                 <div class="recog_process" style="display: none">
-                    <p>请稍等。在AR扫描中...<img src="images/ajax-loader.gif"></p>
+                    <p>请稍等，AR识别中...<img src="images/ajax-loader.gif"></p>
+                </div>
+
+                <div class="camera-wrap" style="display: none">
+                    <div class="videoWrapper">
+                        <video id="video" class="hidden" autoplay></video>
+                        <div class="scan-line-wrap">
+                            <img src="images/page6-scanline.png">
+                        </div>
+                        <!--<img src="">-->
+                    </div>
+                    <canvas id="canvas" style="display: none"></canvas>
+                    <!--<button id="capture" class="hidden btn btn-primary btn-lg">Capture</button>-->
                 </div>
 
                 <div class="scan_close_wrap">
@@ -67,7 +79,8 @@
                 </div>
 
                 <div class="cant_recog_wrap" style="display: none">
-                    <p>扫描失败。请重试。</p>
+                    <p id="final_recog_show" style="display: none">终于发现了小猫的身影。</p>
+                    <p id="cant_recog_show" style="display: none">扫描失败。请重试。</p>
                     <a href="javascript: cant_recog_hide();">关 闭</a>
                 </div>
             </div>
@@ -76,7 +89,7 @@
                 <img style=";" id="frame"/>
                 <canvas id="imgCanvas"> </canvas>
                 <input type="text" id="output"/>
-                <input type="file" accept="image/*" capture="camera" id="camera"/>
+                <input type="file" accept="image/*" multiple id="camera"/>
             </div>
         </div>
 
