@@ -35,6 +35,7 @@ window.addEventListener('load',function(){
         turnon_camera();
         $('.videoWrapper').show();
         $('#scan_capture_img').hide();
+        $('.recog_process').hide();
     })
 
     // scan dialog close button
@@ -119,12 +120,17 @@ window.addEventListener('load',function(){
             $('#scan_before_img').hide();
             $('.scan_btn_wrap').hide();
             $('.recog_process').show();
+            $('#waiting').hide();
+            $('#open_camera').show();
+            $('#waiting').hide();
 
             camera.addEventListener('change', function(e) {
 
                 var file = e.target.files[0];
                 frame.src = URL.createObjectURL(file);
 
+                $('#waiting').show();
+                $('#open_camera').hide();
                 $('#scan_capture_img').attr('src', URL.createObjectURL(file));
                 $('#scan_capture_img').show();
             });

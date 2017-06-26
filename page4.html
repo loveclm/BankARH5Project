@@ -57,7 +57,8 @@
 
                 <img src="" id="scan_capture_img" style="display: none">
                 <div class="recog_process" style="display: none">
-                    <p>请稍等，AR识别中...<img src="images/ajax-loader.gif"></p>
+                    <p id="waiting" style="display: none;">请稍等，AR识别中...<img src="images/ajax-loader.gif"></p>
+                    <p id="open_camera" style="display: none;">请打开拍照功能</p>
                 </div>
 
                 <div class="camera-wrap" style="display: none">
@@ -79,9 +80,9 @@
                 </div>
 
                 <div class="cant_recog_wrap" style="display: none">
-                    <p id="final_recog_show" style="display: none">终于发现了小猫的身影。</p>
+                    <p id="final_recog_show" style="display: none">恭喜您，扫描成功！</p>
                     <p id="cant_recog_show" style="display: none">扫描失败。请重试。</p>
-                    <a href="javascript: cant_recog_hide();">关 闭</a>
+                    <a href="javascript: cant_recog_hide();">确 定</a>
                 </div>
             </div>
 
