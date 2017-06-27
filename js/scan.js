@@ -113,7 +113,12 @@ window.addEventListener('load',function(){
 
     // scan button
     $('#scan_btn').click(function(){
-        if(videoStatus == false || check_camera == false){
+        var u = navigator.userAgent;
+        var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1; //android终端
+        var isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
+
+        //if(videoStatus == false || check_camera == false){
+        if(isiOS){
             var camera = document.getElementById('camera');
             var frame = document.getElementById('frame');
 
