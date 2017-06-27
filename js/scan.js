@@ -85,8 +85,8 @@ window.addEventListener('load',function(){
                         console.log(result);
 
                         if( result == 'h5ar_catch' ){
-                            //show_success_modal();
-                            find_recog_show();
+                            show_success_modal();
+                            //find_recog_show();
                             return;
                         }
                     }else{
@@ -378,8 +378,8 @@ function capture_recognitioon(){
                     result = result.id;
 
                     if( result == 'h5ar_catch' ){
-                        //show_success_modal();
-                        find_recog_show();
+                        show_success_modal();
+                        //find_recog_show();
                         return;
                     }
                 }
