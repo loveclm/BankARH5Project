@@ -38,6 +38,9 @@
 
     <script>
         window.addEventListener('load',function(){
+            $('.page-loading').hide();
+            $('.container').show();
+
             $('#hand_m').click(function(){
                 window.location = 'page3.html';
             })
@@ -48,7 +51,7 @@
     </script>
 </head>
 <body>
-    <div class="container">
+    <div class="container" style="display: none">
         <div class="main">
             <a href="javascript:page2()" id="page1">
                 <img src="images/page1-light/01.png" style="display: none" id="page1_light01">
@@ -149,6 +152,10 @@
                 <img src="images/close.png" width="30px">
             </a>
         </div>
+    </div>
+
+    <div class="page-loading">
+        <img src="images/ajax-loader.gif">
     </div>
 
     <script>

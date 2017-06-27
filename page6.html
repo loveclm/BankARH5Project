@@ -18,7 +18,7 @@
     <title>杭州银行找财猫信用计划，邀您来找财！</title>
     <style type="text/css">
         .container {
-            background: url("images/page4-main.png") no-repeat center center;
+            background: url("images/page6-bg.png") no-repeat center center;
             background-size: 100% 100%;
             background-position-x: 0;
             background-position-y: 0;
@@ -49,6 +49,8 @@
 
     <script>
         window.addEventListener('load',function(){
+            $('.page-loading').hide();
+            $('.container').show();
             $('#lightbox').show();
             $('#scan_money_img').css('animation', 'moneyeffect 3s');
         });
@@ -56,7 +58,7 @@
 
 </head>
 <body>
-    <div class="container">
+    <div class="container" style="display: none;">
         <div id="lightbox" style="display: none;">
             <div class="lightbox-content" style="margin-top: 0; height: 75%">
                 <img src="images/page6-main.png" id="scan_after_img">
@@ -70,6 +72,8 @@
             </div>
         </div>
     </div>
-
+    <div class="page-loading">
+        <img src="images/ajax-loader.gif">
+    </div>
 </body>
 </html>

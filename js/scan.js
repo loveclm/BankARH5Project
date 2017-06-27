@@ -12,8 +12,31 @@ var apiScale = 480;
 var apiIsAll = 'best';
 var is_processing = false;
 
-var recog_count = 0;
 var check_camera = true;
+var is_closed = true;
+
+if (navigator.mediaDevices === undefined) {
+    navigator.mediaDevices = {};
+}
+
+if (navigator.mediaDevices.getUserMedia === undefined) {
+    navigator.mediaDevices.getUserMedia = function(constraints) {
+
+        // First get ahold of the legacy getUserMedia, if present
+        var getUserMedia = navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
+
+        // Some browsers just don't implement it - return a rejected promise with an error
+        // to keep a consistent interface
+        if (!getUserMedia) {
+            return Promise.reject(new Error('getUserMedia is not implemented in this browser'));
+        }
+
+        // Otherwise, wrap the call to the old navigator.getUserMedia with a Promise
+        return new Promise(function(resolve, reject) {
+            getUserMedia.call(navigator, constraints, resolve, reject);
+        });
+    }
+}
 
 window.addEventListener('load',function(){
     canvas = document.querySelector('#canvas');
@@ -43,8 +66,8 @@ window.addEventListener('load',function(){
         $('#scan_capture_img').hide();
         $('.scan_btn_wrap').hide();
         $('#lightbox').hide();
-        clearInterval(recog_timmer);
-        recog_count = 0;
+        clearTimeout(recog_timmer);
+        is_closed = true;
     });
 
     $("#frame").load(function(){
@@ -79,15 +102,42 @@ window.addEventListener('load',function(){
                 debug: true,
                 onRecognitionSuccess: function(resp) {
                     if( resp.status == 0 ){
-                        console.log(resp.objects);
-                        var result = resp.objects[0];
-                        result = result.id;
+                        //console.log(resp.objects);
+                        //var result = resp.objects[0];
+                        //result = result.id;
+                        //console.log(result);
+                        //
+                        //if( result == 'h5ar_catch' ){
+                        //    show_success_modal();
+                        //    //find_recog_show();
+                        //    return;
+                        //}
+
+                        var is_catch = false;
+                        var is_text = false;
+                        for( var i=0; i<resp.objects.length; i++ ){
+                            var result = resp.objects[i];
+                            result = result.id;
+                            if( result == 'h5ar_catch' ){
+                                is_catch = true;
+                                console.log('catch found');
+                            }
+                            if( result == 'h5ar_text' || result == 'h5ar_text1' ||
+                                result == 'h5ar_text2' || result == 'h5ar_text3' ||
+                                result == 'h5ar_text4' || result == 'h5ar_text5'){
+                                is_text = true;
+                                console.log('text found : ' + result);
+                            }
+                        }
                         console.log(result);
 
-                        if( result == 'h5ar_catch' ){
+                        if( is_catch == true && is_text == true ){
+                            console.log('show_success_modal');
                             show_success_modal();
                             //find_recog_show();
                             return;
+                        } else {
+                            cant_recog_show();
                         }
                     }else{
                         cant_recog_show();
@@ -113,12 +163,13 @@ window.addEventListener('load',function(){
 
     // scan button
     $('#scan_btn').click(function(){
+        is_closed = false;
         var u = navigator.userAgent;
         var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1; //android终端
         var isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
 
-        //if(videoStatus == false || check_camera == false){
-        if(isiOS){
+        if(videoStatus == false || check_camera == false){
+        //if(isiOS){
             var camera = document.getElementById('camera');
             var frame = document.getElementById('frame');
 
@@ -142,15 +193,8 @@ window.addEventListener('load',function(){
 
             $('#camera').click();
         } else {
-            recog_timmer = setInterval( function(){
-                recog_count++;
-                if( recog_count > 2 ){
-                    clearInterval( recog_timmer );
-                    cant_recog_show();
-                } else if( recog_count < 2 ){
+            recog_timmer = setTimeout( function(){
                     capture_recognitioon();
-                }
-
             }, 4000 );
             show_camera();
 
@@ -188,6 +232,7 @@ function show_scan_modal(){
 }
 
 function show_success_modal(){
+    $('.camera-wrap').hide();
     window.location = 'page6.html';
 }
 
@@ -207,9 +252,8 @@ function find_recog_show(){
     is_find = true;
     $('#final_recog_show').show();
     $('#cant_recog_show').hide();
-    recog_count = 0;
     is_processing = false;
-    clearInterval(recog_timmer);
+    clearTimeout(recog_timmer);
 }
 
 function cant_recog_show(){
@@ -221,9 +265,8 @@ function cant_recog_show(){
     is_find = false;
     $('#final_recog_show').hide();
     $('#cant_recog_show').show();
-    recog_count = 0;
     is_processing = false;
-    clearInterval(recog_timmer);
+    clearTimeout(recog_timmer);
 }
 
 function cant_recog_hide(){
@@ -275,33 +318,7 @@ function turnon_camera(){
     videoElement = document.querySelector('video');
 
     navigator.getUserMedia = navigator.getUserMedia ||
-        navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.mediaDevices.getUserMedia;// Older browsers might not implement mediaDevices at all, so we set an empty object first
-    if (navigator.mediaDevices === undefined) {
-        navigator.mediaDevices = {};
-    }
-
-// Some browsers partially implement mediaDevices. We can't just assign an object
-// with getUserMedia as it would overwrite existing properties.
-// Here, we will just add the getUserMedia property if it's missing.
-    if (navigator.mediaDevices.getUserMedia === undefined) {
-        navigator.mediaDevices.getUserMedia = function(constraints) {
-
-            // First get ahold of the legacy getUserMedia, if present
-            var getUserMedia = navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
-
-            // Some browsers just don't implement it - return a rejected promise with an error
-            // to keep a consistent interface
-            if (!getUserMedia) {
-                return Promise.reject(new Error('getUserMedia is not implemented in this browser'));
-            }
-
-            // Otherwise, wrap the call to the old navigator.getUserMedia with a Promise
-            return new Promise(function(resolve, reject) {
-                getUserMedia.call(navigator, constraints, resolve, reject);
-            });
-        }
-    }
-
+        navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.mediaDevices.getUserMedia;
 
     var rearCameraId;
 
@@ -354,6 +371,7 @@ function errorCallback(error) {
 
 
 function capture_recognitioon(){
+    console.log('capture_recognitioon');
     //video.addEventListener('click', function(e){
     if (videoStatus) {
         $('#capture').show();
@@ -375,35 +393,50 @@ function capture_recognitioon(){
             allResults: apiIsAll,
             debug: true,
             onRecognitionSuccess: function(resp) {
-                if(recog_count == 0){
-                    return;
-                }
+                console.log(resp);
                 if( resp.status == 0 ){
-                    var result = resp.objects[0];
-                    result = result.id;
+                    if( is_closed ){
+                        return;
+                    }
+                    var is_catch = false;
+                    var is_text = false;
+                    for( var i=0; i<resp.objects.length; i++ ){
+                        var result = resp.objects[i];
+                        result = result.id;
+                        if( result == 'h5ar_catch' ){
+                            is_catch = true;
+                            console.log('catch found');
+                        }
+                        if( result == 'h5ar_text' || result == 'h5ar_text1' ||
+                            result == 'h5ar_text2' || result == 'h5ar_text3' ||
+                            result == 'h5ar_text4' || result == 'h5ar_text5'){
+                            is_text = true;
+                            console.log('text found : ' + result);
+                        }
+                    }
 
-                    if( result == 'h5ar_catch' ){
+                    console.log(result);
+
+                    if( is_catch == true && is_text == true ){
+                        console.log('show_success_modal');
                         show_success_modal();
                         //find_recog_show();
                         return;
+                    } else {
+                        cant_recog_show();
                     }
                 }
 
                 cant_recog_show();
             },
             onRecognitionFailure: function(resp) {
-                if(recog_count == 0){
-                    return;
-                }
+                console.log(resp);
 
                 cant_recog_show();
                 $('#canvas').hide();
                 is_processing = false;
             },
             onError: function(ajax) {
-                if(recog_count == 0){
-                    return;
-                }
 
                 cant_recog_show();
             }
@@ -433,25 +466,3 @@ function capture(scale) {
     return image;
 }
 
-if (navigator.mediaDevices === undefined) {
-    navigator.mediaDevices = {};
-}
-
-if (navigator.mediaDevices.getUserMedia === undefined) {
-    navigator.mediaDevices.getUserMedia = function(constraints) {
-
-        // First get ahold of the legacy getUserMedia, if present
-        var getUserMedia = navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
-
-        // Some browsers just don't implement it - return a rejected promise with an error
-        // to keep a consistent interface
-        if (!getUserMedia) {
-            return Promise.reject(new Error('getUserMedia is not implemented in this browser'));
-        }
-
-        // Otherwise, wrap the call to the old navigator.getUserMedia with a Promise
-        return new Promise(function(resolve, reject) {
-            getUserMedia.call(navigator, constraints, resolve, reject);
-        });
-    }
-}

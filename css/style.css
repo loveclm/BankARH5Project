@@ -300,6 +300,18 @@ html, body {
     width: 15%
 }
 
+.page-loading{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+}
+.page-loading img{
+    width: 5%;
+    position: absolute;
+    top: 45%;
+    left: 47%;
+}
+
 @media screen and (min-width : 300px) and (max-width : 700px){
     .low{
         right: 20px;
