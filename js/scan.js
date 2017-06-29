@@ -115,23 +115,31 @@ window.addEventListener('load',function(){
 
                         var is_catch = false;
                         var is_text = false;
+                        var is_over = false;
+
                         for( var i=0; i<resp.objects.length; i++ ){
                             var result = resp.objects[i];
                             result = result.id;
+                            if(i==0 && result=='h5ar_over'){
+                                console.log('catch over');
+                                is_over = true;
+                            }
                             if( result == 'h5ar_catch' ){
                                 is_catch = true;
                                 console.log('catch found');
                             }
                             if( result == 'h5ar_text' || result == 'h5ar_text1' ||
-                                result == 'h5ar_text2' || result == 'h5ar_text3' ||
+                                result == 'h5ar_text10' || result == 'h5ar_text11' ||
                                 result == 'h5ar_text4' || result == 'h5ar_text5'){
                                 is_text = true;
                                 console.log('text found : ' + result);
                             }
+
                         }
+
                         console.log(result);
 
-                        if( is_catch == true && is_text == true ){
+                        if( is_catch == true && is_text == true && is_over == false ){
                             console.log('show_success_modal');
                             show_success_modal();
                             //find_recog_show();
@@ -400,24 +408,34 @@ function capture_recognitioon(){
                     }
                     var is_catch = false;
                     var is_text = false;
+                    var is_over = false;
+
                     for( var i=0; i<resp.objects.length; i++ ){
                         var result = resp.objects[i];
                         result = result.id;
+                        if(i==0 && result=='h5ar_over'){
+                            console.log('catch over');
+                            //alert('这不是完整的图片。');
+                            is_over = true;
+                        }
                         if( result == 'h5ar_catch' ){
                             is_catch = true;
                             console.log('catch found');
+                            //alert('找猫。');
                         }
                         if( result == 'h5ar_text' || result == 'h5ar_text1' ||
-                            result == 'h5ar_text2' || result == 'h5ar_text3' ||
+                            result == 'h5ar_text10' || result == 'h5ar_text11' ||
                             result == 'h5ar_text4' || result == 'h5ar_text5'){
                             is_text = true;
                             console.log('text found : ' + result);
+                            //alert('找文字 : ' + result);
                         }
+
                     }
 
                     console.log(result);
 
-                    if( is_catch == true && is_text == true ){
+                    if( is_catch == true && is_text == true && is_over == false ){
                         console.log('show_success_modal');
                         show_success_modal();
                         //find_recog_show();
@@ -431,13 +449,14 @@ function capture_recognitioon(){
             },
             onRecognitionFailure: function(resp) {
                 console.log(resp);
+                //alert('1');
 
                 cant_recog_show();
                 $('#canvas').hide();
                 is_processing = false;
             },
             onError: function(ajax) {
-
+                //alert('2');
                 cant_recog_show();
             }
         }
